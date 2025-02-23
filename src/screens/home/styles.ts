@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { theme } from '../../styles/theme';
 
 export const Header = styled.header`
   display: flex;
@@ -48,4 +49,30 @@ export const Balance = styled.div`
   align-items: center;
   gap: 0.75rem;  // 12px
   width: 100%;
+`;
+
+export const ChartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;  // 16px
+  background-color: ${theme.colors.dark};
+  border-radius: 0.25rem;  // 4px
+  gap: 0.75rem;  // 12px
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+`;
+
+export const ChartContent = styled.div`
+  height: 14.5rem;  // 232px
+`;
+
+export const ChartAction = styled.div`
+  display: flex;
+  align-items: flex-end;
+  width: 8rem;  // 128px
+  gap: 0.5rem;  // 8px
 `;

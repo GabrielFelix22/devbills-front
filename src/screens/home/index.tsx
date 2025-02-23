@@ -5,7 +5,17 @@ import { Card } from '../../components/card';
 import { Input } from '../../components/input';
 import { Logo } from '../../components/logo';
 import { Title } from '../../components/title';
-import { Balance, Filters, Header, InputGroup, Main, Section } from './styles';
+import {
+  Balance,
+  ChartAction,
+  ChartContainer,
+  ChartContent,
+  Filters,
+  Header,
+  InputGroup,
+  Main,
+  Section,
+} from './styles';
 
 export function Home() {
   return (
@@ -24,8 +34,8 @@ export function Home() {
             <InputGroup>
               <InputMask
                 component={Input}
-                mask="dd/mm/yyyy"
-                replacement={{ d: /\d/, m: /\d/, y: /\d/ }}
+                mask="dd/mm/aaaa"
+                replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
                 variant="dark"
                 label="Inicio"
                 placeholder="dd/mm/aaaa"
@@ -33,7 +43,7 @@ export function Home() {
               <InputMask
                 component={Input}
                 mask="dd/mm/yyyy"
-                replacement={{ d: /\d/, m: /\d/, y: /\d/ }}
+                replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
                 variant="dark"
                 label="Fim"
                 placeholder="dd/mm/aaaa"
@@ -46,6 +56,37 @@ export function Home() {
             <Card title="Saldo" amount={1000000} variant="incomes" />
             <Card title="Saldo" amount={1000000} variant="expenses" />
           </Balance>
+          <ChartContainer>
+            <header>
+              <Title
+                title="Gastos"
+                subtitle="Despesas por categoria do periodo"
+              />
+            </header>
+            {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+            <ChartContent></ChartContent>
+          </ChartContainer>
+          <ChartContainer>
+            <header>
+              <Title
+                title="Evolução Financeira"
+                subtitle="Saldo, Receitas e Gastos no ano"
+              />
+              <ChartAction>
+                <InputMask
+                  component={Input}
+                  mask="aaaa"
+                  replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
+                  variant="black"
+                  label="Ano"
+                  placeholder="aaaa"
+                />
+                <ButtonIcon />
+              </ChartAction>
+            </header>
+            {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
+            <ChartContent></ChartContent>
+          </ChartContainer>
         </Section>
       </Main>
     </>

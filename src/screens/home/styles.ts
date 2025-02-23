@@ -76,3 +76,25 @@ export const ChartAction = styled.div`
   width: 8rem;  // 128px
   gap: 0.5rem;  // 8px
 `;
+
+export const Aside = styled.aside`
+  min-width: 22.5rem; // 360px
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;  // 12px
+  padding: 1rem;  // 16px
+  border-radius: 0.25rem;  // 4px
+  background-color: ${theme.colors.dark};
+
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;  // 16px
+  }
+`;
+
+export const SearchTransactions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;  // 8px
+`;

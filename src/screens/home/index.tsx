@@ -5,7 +5,9 @@ import { Card } from '../../components/card';
 import { Input } from '../../components/input';
 import { Logo } from '../../components/logo';
 import { Title } from '../../components/title';
+import { Transaciton } from '../../components/transaction';
 import {
+  Aside,
   Balance,
   ChartAction,
   ChartContainer,
@@ -14,6 +16,7 @@ import {
   Header,
   InputGroup,
   Main,
+  SearchTransactions,
   Section,
 } from './styles';
 
@@ -88,6 +91,43 @@ export function Home() {
             <ChartContent></ChartContent>
           </ChartContainer>
         </Section>
+        <Aside>
+          <header>
+            <Title title="Transações" subtitle="Receitas e Gastos no período" />
+            <SearchTransactions>
+              <Input variant="black" placeholder="Procurar transação..." />
+              <ButtonIcon />
+            </SearchTransactions>
+            <Transaciton
+              id={1}
+              amount={20000}
+              date="22/08/2024"
+              category={{ title: 'ALIMENTAÇÃO', color: '#FF33BB' }}
+              title="Mercado"
+            />
+            <Transaciton
+              id={1}
+              amount={20000}
+              date="22/08/2024"
+              category={{ title: 'ALIMENTAÇÃO', color: '#FF33BB' }}
+              title="Shopping"
+            />
+            <Transaciton
+              id={1}
+              amount={20000}
+              date="22/08/2024"
+              category={{ title: 'ALIMENTAÇÃO', color: '#FF33BB' }}
+              title="Compras"
+            />
+            <Transaciton
+              id={1}
+              amount={20000}
+              date="22/08/2024"
+              category={{ title: 'ALIMENTAÇÃO', color: '#FF33BB' }}
+              title="Roupas"
+            />
+          </header>
+        </Aside>
       </Main>
     </>
   );

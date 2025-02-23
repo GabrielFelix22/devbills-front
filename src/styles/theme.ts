@@ -5,7 +5,7 @@ export const theme = {
     success: '#00ED64',
     info: '#016BF8',
     warning: '#FFC010',
-    erro: '#DB3030',
+    error: '#DB3030',
     white: '#F9FBFA',
     light: '#E8EDEB',
     neutral: '#C1C7C6',

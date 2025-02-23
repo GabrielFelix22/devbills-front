@@ -2,6 +2,7 @@ import { InputMask } from '@react-input/mask';
 import { Button } from '../../components/button';
 import { ButtonIcon } from '../../components/button-icon';
 import { Card } from '../../components/card';
+import { Dialog } from '../../components/dialog';
 import { Input } from '../../components/input';
 import { Logo } from '../../components/logo';
 import { Title } from '../../components/title';
@@ -18,6 +19,7 @@ import {
   Main,
   SearchTransactions,
   Section,
+  TransactionGroup,
 } from './styles';
 
 export function Home() {
@@ -26,7 +28,7 @@ export function Home() {
       <Header>
         <Logo />
         <div>
-          <Button>Nova transação</Button>
+          <Dialog trigger={<Button>Nova Transação</Button>}>Olá</Dialog>
           <Button>Nova categoria</Button>
         </div>
       </Header>
@@ -98,6 +100,8 @@ export function Home() {
               <Input variant="black" placeholder="Procurar transação..." />
               <ButtonIcon />
             </SearchTransactions>
+          </header>
+          <TransactionGroup>
             <Transaciton
               id={1}
               amount={20000}
@@ -126,7 +130,7 @@ export function Home() {
               category={{ title: 'ALIMENTAÇÃO', color: '#FF33BB' }}
               title="Roupas"
             />
-          </header>
+          </TransactionGroup>
         </Aside>
       </Main>
     </>

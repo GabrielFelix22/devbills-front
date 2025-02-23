@@ -98,3 +98,9 @@ export const SearchTransactions = styled.div`
   align-items: center;
   gap: 0.5rem;  // 8px
 `;
+
+export const TransactionGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 0 0.75rem;
+`;

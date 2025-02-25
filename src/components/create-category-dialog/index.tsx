@@ -26,7 +26,7 @@ export function CreateCategoryDialog() {
     >
       <Container>
         <Title
-          title="Nova categoria"
+          title="Nova Categoria"
           subtitle="Crie uma nova categoria para suas transações"
         />
 

@@ -95,3 +95,10 @@ export const RadioGroup = styled.div`
     font-size: 0.875rem;  // 14px
   }
 `;
+
+export const ErrorMessage = styled.span`
+  margin-top: 0.25rem;  // 4px
+  font-size: 0.625rem;  // 10px
+  line-height: 80%;
+  color: ${theme.colors.error};
+`;

@@ -1,8 +1,15 @@
 import { InputMask } from '@react-input/mask';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import dayjs from 'dayjs';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { ButtonIcon } from '../../components/button-icon';
 import { Card } from '../../components/card';
-import { CategoriesPieChart } from '../../components/categories-pie-chart';
+import {
+  CategoriesPieChart,
+  type CategoryProps,
+} from '../../components/categories-pie-chart';
 import { CreateCategoryDialog } from '../../components/create-category-dialog';
 import { CreateTransactionDialog } from '../../components/create-transaction-dialog';
 import { FinancialEvolutionBarChart } from '../../components/financial-evolution-bar-chart';
@@ -10,6 +17,9 @@ import { Input } from '../../components/input';
 import { Logo } from '../../components/logo';
 import { Title } from '../../components/title';
 import { Transaciton } from '../../components/transaction';
+import { useFetchAPI } from '../../hooks/useFetchAPI';
+import { transactionsFilterSchema } from '../../validators/schemas';
+import type { TransactionsFilterData } from '../../validators/types';
 import {
   Aside,
   Balance,
@@ -26,6 +36,49 @@ import {
 } from './styles';
 
 export function Home() {
+  const transactionsFilterForm = useForm<TransactionsFilterData>({
+    defaultValues: {
+      title: '',
+      categoryId: '',
+      beginDate: dayjs().startOf('month').format('DD/MM/YYYY'),
+      endDate: dayjs().endOf('month').format('DD/MM/YYYY'),
+    },
+    resolver: zodResolver(transactionsFilterSchema),
+  });
+
+  const { transactions, fetchTransactions } = useFetchAPI();
+
+  useEffect(() => {
+    fetchTransactions(transactionsFilterForm.getValues());
+  }, [fetchTransactions, transactionsFilterForm]);
+
+  const [selectedCategory, setSelectedCategory] =
+    useState<CategoryProps | null>(null);
+
+  const handleSelectCategory = useCallback(
+    ({ id, title, color }: CategoryProps) => {
+      setSelectedCategory({
+        id,
+        title,
+        color,
+      });
+      transactionsFilterForm.setValue('categoryId', id);
+    },
+    [transactionsFilterForm],
+  );
+
+  const handleDeSelectCategory = useCallback(() => {
+    setSelectedCategory(null);
+    transactionsFilterForm.setValue('categoryId', '');
+  }, [transactionsFilterForm]);
+
+  const onSubmitTransactions = useCallback(
+    async (data: TransactionsFilterData) => {
+      await fetchTransactions(data);
+    },
+    [fetchTransactions],
+  );
+
   return (
     <>
       <Header>
@@ -47,16 +100,26 @@ export function Home() {
                 variant="dark"
                 label="Inicio"
                 placeholder="dd/mm/aaaa"
+                error={
+                  transactionsFilterForm.formState.errors.beginDate?.message
+                }
+                {...transactionsFilterForm.register('beginDate')}
               />
               <InputMask
                 component={Input}
-                mask="dd/mm/yyyy"
+                mask="dd/mm/aaaa"
                 replacement={{ d: /\d/, m: /\d/, a: /\d/ }}
                 variant="dark"
                 label="Fim"
                 placeholder="dd/mm/aaaa"
+                error={transactionsFilterForm.formState.errors.endDate?.message}
+                {...transactionsFilterForm.register('endDate')}
               />
-              <ButtonIcon />
+              <ButtonIcon
+                onClick={transactionsFilterForm.handleSubmit(
+                  onSubmitTransactions,
+                )}
+              />
             </InputGroup>
           </Filters>
           <Balance>
@@ -72,7 +135,7 @@ export function Home() {
               />
             </header>
             <ChartContent>
-              <CategoriesPieChart />
+              <CategoriesPieChart onClick={handleSelectCategory} />
             </ChartContent>
           </ChartContainer>
           <ChartContainer>
@@ -100,41 +163,38 @@ export function Home() {
         </Section>
         <Aside>
           <header>
-            <Title title="Transações" subtitle="Receitas e Gastos no período" />
+            <Title
+              title="Transações"
+              subtitle="Receitas e Gastos no período"
+              {...transactionsFilterForm.register('title')}
+            />
             <SearchTransactions>
               <Input variant="black" placeholder="Procurar transação..." />
-              <ButtonIcon />
+              <ButtonIcon
+                onClick={transactionsFilterForm.handleSubmit(
+                  onSubmitTransactions,
+                )}
+              />
             </SearchTransactions>
           </header>
           <TransactionGroup>
-            <Transaciton
-              id={1}
-              amount={20000}
-              date="22/08/2024"
-              category={{ title: 'ALIMENTAÇÃO', color: '#FF33BB' }}
-              title="Mercado"
-            />
-            <Transaciton
-              id={1}
-              amount={20000}
-              date="22/08/2024"
-              category={{ title: 'ALIMENTAÇÃO', color: '#FF33BB' }}
-              title="Shopping"
-            />
-            <Transaciton
-              id={1}
-              amount={20000}
-              date="22/08/2024"
-              category={{ title: 'ALIMENTAÇÃO', color: '#FF33BB' }}
-              title="Compras"
-            />
-            <Transaciton
-              id={1}
-              amount={20000}
-              date="22/08/2024"
-              category={{ title: 'ALIMENTAÇÃO', color: '#FF33BB' }}
-              title="Roupas"
-            />
+            {transactions?.length &&
+              transactions?.map((item, index) => (
+                <Transaciton
+                  key={item._id}
+                  id={index + 1}
+                  amount={
+                    item.type === 'expense' ? item.amount * -1 : item.amount
+                  }
+                  date={dayjs(item.date).add(3, 'hours').format('DD/MM/YYYY')}
+                  category={{
+                    title: item.category.title,
+                    color: item.category.color,
+                  }}
+                  title={item.title}
+                  variant={item.type}
+                />
+              ))}
           </TransactionGroup>
         </Aside>
       </Main>

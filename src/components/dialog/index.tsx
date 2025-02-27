@@ -11,7 +11,9 @@ type DialogProps = {
 export function Dialog({ children, trigger, open, onOpenChange }: DialogProps) {
   return (
     <Root open={open} onOpenChange={onOpenChange}>
-      <Trigger>{trigger}</Trigger>
+      <Trigger asChild>
+        <span>{trigger}</span>
+      </Trigger>
       <Portal>
         <Overlay />
         <Content>{children}</Content>

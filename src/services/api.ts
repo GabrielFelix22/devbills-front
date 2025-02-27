@@ -4,6 +4,7 @@ import type {
   CreateCategory,
   CreateTransaction,
   Transaction,
+  TransactionsFilter,
 } from './api-types';
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
@@ -20,6 +21,26 @@ export class APIService {
       createTransactionData,
     );
 
+    return data;
+  }
+
+  static async getTransactions({
+    title,
+    categoryId,
+    beginDate,
+    endDate,
+  }: TransactionsFilter): Promise<Transaction[]> {
+    const { data } = await APIService.client.get<Transaction[]>(
+      '/transactions',
+      {
+        params: {
+          ...(title?.length && { title }),
+          ...(categoryId?.length && { categoryId }),
+          beginDate,
+          endDate,
+        },
+      },
+    );
     return data;
   }
 

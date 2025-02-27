@@ -13,7 +13,7 @@ type TransactionProps = {
   variant?: 'income' | 'expense';
 };
 
-export function Transaciton({
+export function Transaction({
   id,
   title,
   date,

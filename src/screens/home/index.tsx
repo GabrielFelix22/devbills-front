@@ -16,7 +16,7 @@ import { FinancialEvolutionBarChart } from '../../components/financial-evolution
 import { Input } from '../../components/input';
 import { Logo } from '../../components/logo';
 import { Title } from '../../components/title';
-import { Transaciton } from '../../components/transaction';
+import { Transaction } from '../../components/transaction';
 import { useFetchAPI } from '../../hooks/useFetchAPI';
 import { transactionsFilterSchema } from '../../validators/schemas';
 import type { TransactionsFilterData } from '../../validators/types';
@@ -46,11 +46,15 @@ export function Home() {
     resolver: zodResolver(transactionsFilterSchema),
   });
 
-  const { transactions, fetchTransactions } = useFetchAPI();
+  const { transactions, dashboard, fetchTransactions, fetchDashboard } =
+    useFetchAPI();
 
   useEffect(() => {
+    const { beginDate, endDate } = transactionsFilterForm.getValues();
+
+    fetchDashboard({ beginDate, endDate });
     fetchTransactions(transactionsFilterForm.getValues());
-  }, [fetchTransactions, transactionsFilterForm]);
+  }, [fetchTransactions, transactionsFilterForm, fetchDashboard]);
 
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryProps | null>(null);
@@ -77,6 +81,16 @@ export function Home() {
       await fetchTransactions(data);
     },
     [fetchTransactions],
+  );
+
+  const onSubmitDashboard = useCallback(
+    async (data: TransactionsFilterData) => {
+      const { beginDate, endDate } = data;
+
+      await fetchDashboard({ beginDate, endDate });
+      await fetchTransactions(data);
+    },
+    [fetchDashboard, fetchTransactions],
   );
 
   return (
@@ -116,16 +130,22 @@ export function Home() {
                 {...transactionsFilterForm.register('endDate')}
               />
               <ButtonIcon
-                onClick={transactionsFilterForm.handleSubmit(
-                  onSubmitTransactions,
-                )}
+                onClick={transactionsFilterForm.handleSubmit(onSubmitDashboard)}
               />
             </InputGroup>
           </Filters>
           <Balance>
-            <Card title="Saldo" amount={1000000} />
-            <Card title="Saldo" amount={1000000} variant="incomes" />
-            <Card title="Saldo" amount={1000000} variant="expenses" />
+            <Card title="Saldo" amount={dashboard?.balance?.balance || 0} />
+            <Card
+              title="Receitas"
+              amount={dashboard?.balance?.incomes || 0}
+              variant="incomes"
+            />
+            <Card
+              title="Gastos"
+              amount={dashboard?.balance?.expenses * -1 || 0}
+              variant="expenses"
+            />
           </Balance>
           <ChartContainer>
             <header>
@@ -163,13 +183,13 @@ export function Home() {
         </Section>
         <Aside>
           <header>
-            <Title
-              title="Transações"
-              subtitle="Receitas e Gastos no período"
-              {...transactionsFilterForm.register('title')}
-            />
+            <Title title="Transações" subtitle="Receitas e Gastos no período" />
             <SearchTransactions>
-              <Input variant="black" placeholder="Procurar transação..." />
+              <Input
+                variant="black"
+                placeholder="Procurar transação..."
+                {...transactionsFilterForm.register('title')}
+              />
               <ButtonIcon
                 onClick={transactionsFilterForm.handleSubmit(
                   onSubmitTransactions,
@@ -180,7 +200,7 @@ export function Home() {
           <TransactionGroup>
             {transactions?.length &&
               transactions?.map((item, index) => (
-                <Transaciton
+                <Transaction
                   key={item._id}
                   id={index + 1}
                   amount={

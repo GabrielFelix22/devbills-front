@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 
+type CategoryBadgeProps = {
+  $color: string;
+};
+
 export const Header = styled.header`
   display: flex;
   align-items: center;
@@ -103,4 +107,25 @@ export const TransactionGroup = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 0.75rem;
+`;
+
+export const CategoryBadge = styled.span<CategoryBadgeProps>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.25rem;  // 4px
+
+  font-size: 0.625rem;  // 10px
+  font-weight: 400;
+  border: 1px solid ${(props) => props.$color};
+  color: ${(props) => props.$color};
+  padding: 0.25rem;  // 4px
+  border-radius: 0.125rem;  // 2px
+  cursor: pointer;
+
+  svg {
+    fill: ${theme.colors.error};
+    width: 0.875rem;  // 12px
+    height: 0.875rem;  // 12px
+  }
 `;

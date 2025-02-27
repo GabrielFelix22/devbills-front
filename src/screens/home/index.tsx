@@ -1,6 +1,7 @@
 import { InputMask } from '@react-input/mask';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { X } from '@phosphor-icons/react';
 import dayjs from 'dayjs';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -23,6 +24,7 @@ import type { TransactionsFilterData } from '../../validators/types';
 import {
   Aside,
   Balance,
+  CategoryBadge,
   ChartAction,
   ChartContainer,
   ChartContent,
@@ -60,21 +62,25 @@ export function Home() {
     useState<CategoryProps | null>(null);
 
   const handleSelectCategory = useCallback(
-    ({ id, title, color }: CategoryProps) => {
+    async ({ id, title, color }: CategoryProps) => {
       setSelectedCategory({
         id,
         title,
         color,
       });
       transactionsFilterForm.setValue('categoryId', id);
+
+      await fetchTransactions(transactionsFilterForm.getValues());
     },
-    [transactionsFilterForm],
+    [transactionsFilterForm, fetchTransactions],
   );
 
-  const handleDeSelectCategory = useCallback(() => {
+  const handleDeSelectCategory = useCallback(async () => {
     setSelectedCategory(null);
     transactionsFilterForm.setValue('categoryId', '');
-  }, [transactionsFilterForm]);
+
+    await fetchTransactions(transactionsFilterForm.getValues());
+  }, [transactionsFilterForm, fetchTransactions]);
 
   const onSubmitTransactions = useCallback(
     async (data: TransactionsFilterData) => {
@@ -153,9 +159,21 @@ export function Home() {
                 title="Gastos"
                 subtitle="Despesas por categoria do periodo"
               />
+              {selectedCategory && (
+                <CategoryBadge
+                  $color={selectedCategory.color}
+                  onClick={handleDeSelectCategory}
+                >
+                  <X />
+                  {selectedCategory.title.toUpperCase()}
+                </CategoryBadge>
+              )}
             </header>
             <ChartContent>
-              <CategoriesPieChart onClick={handleSelectCategory} />
+              <CategoriesPieChart
+                expenses={dashboard.expenses}
+                onClick={handleSelectCategory}
+              />
             </ChartContent>
           </ChartContainer>
           <ChartContainer>

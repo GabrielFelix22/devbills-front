@@ -29,7 +29,7 @@ export function CategoriesPieChart({
 }: CategoriesPieChartProps) {
   const data = useMemo<ChartData[]>(() => {
     if (expenses?.length) {
-      const chartData = expenses.map((item) => ({
+      const chartData: ChartData[] = expenses.map((item) => ({
         id: item.title,
         label: item.title,
         externalId: item._id,

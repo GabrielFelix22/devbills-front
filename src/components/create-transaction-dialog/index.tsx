@@ -75,7 +75,7 @@ export function CreateTransactionDialog() {
               {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
               <label>Categoria</label>
               <select {...register('categoryId')}>
-                <option value="null">Selecione uma Categoria</option>
+                <option value="null">Selecione uma Categoria...</option>
                 {categories?.length &&
                   categories.map((item) => (
                     <option key={item._id} value={item._id}>

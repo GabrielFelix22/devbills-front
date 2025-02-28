@@ -24,7 +24,10 @@ export class APIService {
     const { data } = await APIService.client.get<Dashboard>(
       '/transactions/dashboard',
       {
-        params: { beginDate, endDate },
+        params: {
+          beginDate,
+          endDate,
+        },
       },
     );
 

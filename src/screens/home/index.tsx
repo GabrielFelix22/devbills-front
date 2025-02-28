@@ -35,7 +35,7 @@ import {
   Header,
   InputGroup,
   Main,
-  SearchTransactions,
+  SearchTransaction,
   Section,
   TransactionGroup,
 } from './styles';
@@ -238,7 +238,7 @@ export function Home() {
         <Aside>
           <header>
             <Title title="Transações" subtitle="Receitas e Gastos no período" />
-            <SearchTransactions>
+            <SearchTransaction>
               <Input
                 variant="black"
                 placeholder="Procurar transação..."
@@ -249,7 +249,7 @@ export function Home() {
                   onSubmitTransactions,
                 )}
               />
-            </SearchTransactions>
+            </SearchTransaction>
           </header>
           <TransactionGroup>
             {transactions?.length &&

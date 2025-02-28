@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { theme } from '../../styles/theme';
 
 type ContainerProps = {
@@ -36,5 +36,12 @@ export const Container = styled.div<ContainerProps>`
     &::placeholder {
       color: ${theme.colors.neutral};
     }
+  }
+
+  span {
+    margin-top: 0.125rem;
+    font-size: 0.625rem;  // 10px
+    line-height: 90%;
+    color: ${theme.colors.error};
   }
 `;

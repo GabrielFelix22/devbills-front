@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { theme } from '../../styles/theme';
 
 type CategoryBadgeProps = {
@@ -97,7 +97,7 @@ export const Aside = styled.aside`
   }
 `;
 
-export const SearchTransactions = styled.div`
+export const SearchTransaction = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;  // 8px

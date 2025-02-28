@@ -29,7 +29,7 @@ export type Transaction = {
   title: string;
   amount: number;
   type: 'income' | 'expense';
-  date: string;
+  date: Date;
   category: Category;
 };
 

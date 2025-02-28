@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { theme } from '../../styles/theme';
 
 export const Root = styled(Dialog.Root)``;

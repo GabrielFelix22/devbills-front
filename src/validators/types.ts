@@ -13,6 +13,6 @@ export type CreateTransactionData = z.infer<typeof createTransactionSchema>;
 
 export type TransactionsFilterData = z.infer<typeof transactionsFilterSchema>;
 
-export type FinancilEvolutionFilterData = z.infer<
+export type FinancialEvolutionFilterData = z.infer<
   typeof financialEvolutionFilterSchema
 >;
